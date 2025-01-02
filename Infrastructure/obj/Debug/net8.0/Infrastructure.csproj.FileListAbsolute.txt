@@ -19,3 +19,4 @@ C:\Users\84973\Desktop\BlossomNails\Infrastructure\obj\Debug\net8.0\Infrastructu
 C:\Users\84973\Desktop\BlossomNails\Infrastructure\obj\Debug\net8.0\refint\Infrastructure.dll
 C:\Users\84973\Desktop\BlossomNails\Infrastructure\obj\Debug\net8.0\Infrastructure.pdb
 C:\Users\84973\Desktop\BlossomNails\Infrastructure\obj\Debug\net8.0\ref\Infrastructure.dll
+C:\Users\84973\Desktop\BlossomNails\Infrastructure\obj\Debug\net8.0\Infrastructure.sourcelink.json
