@@ -3,6 +3,7 @@ using Application.Services.Interfaces;
 using Data.UnitOfWork.Implementations;
 using Data.UnitOfWork.Interfaces;
 using Domain.Context;
+using Infrastructure.Configurations;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,8 +19,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 //
-builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped<IRoleService, RoleService>();
+builder.Services.AddDependencyInjection();
 
 var app = builder.Build();
 
