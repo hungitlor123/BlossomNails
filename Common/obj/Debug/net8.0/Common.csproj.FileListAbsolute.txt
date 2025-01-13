@@ -13,3 +13,4 @@ C:\Users\84973\Desktop\BlossomNails\Common\obj\Debug\net8.0\Common.dll
 C:\Users\84973\Desktop\BlossomNails\Common\obj\Debug\net8.0\refint\Common.dll
 C:\Users\84973\Desktop\BlossomNails\Common\obj\Debug\net8.0\Common.pdb
 C:\Users\84973\Desktop\BlossomNails\Common\obj\Debug\net8.0\ref\Common.dll
+C:\Users\84973\Desktop\BlossomNails\Common\obj\Debug\net8.0\Common.sourcelink.json

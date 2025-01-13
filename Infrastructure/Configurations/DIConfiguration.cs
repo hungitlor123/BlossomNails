@@ -10,7 +10,10 @@ public static class DIConfiguration
 {
     public static void AddDependencyInjection(this IServiceCollection service)
     {
-        service.AddTransient<IUnitOfWork, UnitOfWork>();
         service.AddScoped<IRoleService, RoleService>();
+        service.AddScoped<IUserService, UserService>();
+        service.AddTransient<IUnitOfWork, UnitOfWork>();
+
+
     }
 }
