@@ -222,10 +222,10 @@ public partial class BlossomNailsContext : DbContext
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.Firstname).HasMaxLength(255);
             entity.Property(e => e.Lastname).HasMaxLength(255);
-            entity.Property(e => e.Password).HasColumnType("text");
+            entity.Property(e => e.Password).HasMaxLength(256);
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
             entity.Property(e => e.Username)
-                .HasMaxLength(100)
+                .HasMaxLength(256)
                 .IsUnicode(false);
         });
 
