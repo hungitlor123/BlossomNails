@@ -8,6 +8,7 @@ public interface IUnitOfWork
 {
     public IRoleRepository Role { get; }
 
+    public IUserRepository User { get; }
     void BeginTransaction();
     
     void Commit();

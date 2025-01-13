@@ -23,6 +23,12 @@ public class UnitOfWork : IUnitOfWork
         get { return _role ??= new RoleRepository(_context); }
     }
 
+    private IUserRepository? _user;
+
+    public IUserRepository User
+    {
+        get { return _user ??= new UserRepository(_context); }
+    }
     public void BeginTransaction()
     {
         _transaction = _context.Database.BeginTransaction();

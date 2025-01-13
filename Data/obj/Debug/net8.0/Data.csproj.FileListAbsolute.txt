@@ -15,3 +15,4 @@ C:\Users\84973\Desktop\BlossomNails\Data\obj\Debug\net8.0\Data.dll
 C:\Users\84973\Desktop\BlossomNails\Data\obj\Debug\net8.0\refint\Data.dll
 C:\Users\84973\Desktop\BlossomNails\Data\obj\Debug\net8.0\Data.pdb
 C:\Users\84973\Desktop\BlossomNails\Data\obj\Debug\net8.0\ref\Data.dll
+C:\Users\84973\Desktop\BlossomNails\Data\obj\Debug\net8.0\Data.sourcelink.json
