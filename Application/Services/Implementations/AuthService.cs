@@ -7,9 +7,8 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Common.Extensions;
 using Data.Repositories.Interfaces;
-using Data.UnitOfWork.Implementations;
+using Data.UnitOfWork.Interfaces;
 using Domain.Constants;
-using Domain.Entities;
 using Domain.Models.Authentications;
 using Domain.Models.View;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +18,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Application.Services.Implementations;
 
-public class AuthService(UnitOfWork unitOfWork, IMapper mapper, IOptions<AppSettings> appSettings) : BaseService(unitOfWork, mapper), IAuthService
+public class AuthService(IUnitOfWork unitOfWork, IMapper mapper, IOptions<AppSettings> appSettings) : BaseService(unitOfWork, mapper), IAuthService
 
 {
     private readonly IUserRepository _userRepository = unitOfWork.User;
@@ -125,7 +124,7 @@ public class AuthService(UnitOfWork unitOfWork, IMapper mapper, IOptions<AppSett
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-                    new Claim("id", auth.UserId.ToString()),
+                    new Claim("userId", auth.UserId.ToString()),
                 }),
                 Expires = DateTime.Now.AddDays(7),
                 // Lay secrect key tu appsetings.json de ma hoa token
