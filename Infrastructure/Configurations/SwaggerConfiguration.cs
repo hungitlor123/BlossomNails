@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 
 namespace Infrastructure.Configurations;
@@ -40,5 +41,9 @@ public static class SwaggerConfiguration
                 }
             });
         });
+    }
+    public static void UseJwt(this IApplicationBuilder app)
+    {
+        app.UseMiddleware<JwtMiddleware>();
     }
 }
