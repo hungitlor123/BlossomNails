@@ -13,6 +13,7 @@ public static class DIConfiguration
         service.AddScoped<IRoleService, RoleService>();
         service.AddScoped<IUserService, UserService>();
         service.AddTransient<IUnitOfWork, UnitOfWork>();
+        service.AddScoped<IAuthService, AuthService>();
 
 
     }

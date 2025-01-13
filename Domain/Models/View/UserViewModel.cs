@@ -12,4 +12,7 @@ public class UserViewModel
     public int Phone { get; set; }
     
     public Boolean isActive { get; set; } 
+    
+    public DateTime CreateAt { get; set; }
+
 }
