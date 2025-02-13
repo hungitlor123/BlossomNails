@@ -1,4 +1,4 @@
-using System.IdentityModel.Tokens.Jwt;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Application.Services.Interfaces;
@@ -24,38 +24,58 @@ public class AuthService(IUnitOfWork unitOfWork, IMapper mapper, IOptions<AppSet
     private readonly IUserRepository _userRepository = unitOfWork.User;
     private readonly AppSettings _appSettings = appSettings.Value;
 
-    public async Task<IActionResult> Authenticate(CertificateModel certificate)
+ public async Task<IActionResult> Authenticate(CertificateModel certificate)
+{
+    try
     {
-        try
-        {
-            if (_userRepository.Any(x =>
-                    x.Username.Equals(certificate.Username) && x.Password.Equals(certificate.Password)))
-            {
-                return await AuthenticateUser(certificate);
-            }
+        // Tìm user dựa trên Username
+        var user = _userRepository.FirstOrDefault(x => x.Username == certificate.Username);
 
-            return AppErrors.INVALID_CERTIFICATE.BadRequest();
-        } 
-        catch (Exception)
+        // Nếu user không tồn tại hoặc mật khẩu sai
+        if (user == null || !BCrypt.Net.BCrypt.Verify(certificate.Password, user.Password))
         {
-            throw;
+            return AppErrors.INVALID_CERTIFICATE.BadRequest();
         }
+
+        // Gọi AuthenticateUser và truyền user vào (tránh truy vấn lại)
+        return await AuthenticateUser(certificate);
     }
+    catch (Exception ex)
+    {
+        // Ghi log lỗi để debug nếu cần
+        Console.WriteLine(ex.Message);
+        throw;
+    }
+}
+
+
 
     private async Task<IActionResult> AuthenticateUser(CertificateModel certificate)
     {
+        // Tìm user theo Username trước
         var user = await _userRepository
-            .Where(x => x.Username.Equals(certificate.Username) && x.Password.Equals(certificate.Password))
+            .Where(x => x.Username.Equals(certificate.Username))
             .FirstOrDefaultAsync();
+
+        // Nếu không tìm thấy user
         if (user == null)
         {
             return AppErrors.INVALID_CERTIFICATE.BadRequest();
         }
 
+        // Kiểm tra mật khẩu bằng BCrypt
+        if (!BCrypt.Net.BCrypt.Verify(certificate.Password, user.Password))
+        {
+            return AppErrors.INVALID_CERTIFICATE.BadRequest();
+        }
+
+        // Kiểm tra trạng thái active
         if (user.IsActive.Equals(CustomerStatuses.INACTIVE))
         {
             return AppErrors.INVALID_USER_UNACTIVE.NotAcceptable();
         }
+
+        // Tạo token và trả về dữ liệu user
         var auth = _mapper.Map<AuthModel>(user);
         var accessToken = GenerateJwtToken(auth);
         return new AuthViewModel
@@ -69,8 +89,6 @@ public class AuthService(IUnitOfWork unitOfWork, IMapper mapper, IOptions<AppSet
                 LastName = user.Lastname,
                 isActive = user.IsActive,
                 CreateAt = user.CreatedAt
-                
-                
             }
         }.Ok();
     }

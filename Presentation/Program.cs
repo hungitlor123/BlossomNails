@@ -1,3 +1,4 @@
+using System.Text;
 using Application.Mappings;
 using Application.Services.Implementations;
 using Application.Services.Interfaces;
@@ -6,7 +7,9 @@ using Data.UnitOfWork.Implementations;
 using Data.UnitOfWork.Interfaces;
 using Domain.Context;
 using Infrastructure.Configurations;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 
@@ -43,6 +46,23 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwagger();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDependencyInjection();
+// Add services to the container.
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.SaveToken = true;
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["AppSettings:Issuer"],
+            ValidAudience = builder.Configuration["AppSettings:Audience"],
+            IssuerSigningKey =
+                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["AppSettings:Secret"]!))
+        };
+    });
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 var app = builder.Build();
@@ -57,7 +77,8 @@ if (app.Environment.IsDevelopment())
 //config
 
 app.UseJwt();
-app.UseAuthorization();
+app.UseAuthentication(); // Thêm middleware xác thực
+app.UseAuthorization(); 
 app.UseCors(allowSpecificOrigins);
 app.UseHttpsRedirection();
 app.MapControllers();
